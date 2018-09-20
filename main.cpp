@@ -6,6 +6,7 @@
 
 #include "cell.h"
 #include "grid.h"
+#include "logicalgrid.h"
 
 struct setting{
     const int width;
@@ -21,7 +22,7 @@ struct operators{
     std::vector<sf::Color> colors{sf::Color{255,0,0}, sf::Color{255, 128, 0}, sf::Color{0,255,0}, sf::Color{0, 128, 255}, sf::Color{0, 0, 255}, sf::Color{255, 0 , 128}, sf::Color{255, 255, 255}, sf::Color{255, 255, 0}, sf::Color{255, 0, 255}, sf::Color{0, 255, 255}, sf::Color{0, 0, 0}};
 };
 
-void update(setting config, operators& ops, Grid& cells);
+void update(setting config, operators& ops, Grid& grid);
 
 int main(int argc, char** argv){
     try{
@@ -33,8 +34,8 @@ int main(int argc, char** argv){
         //Argument used to know whether the window has been resized.
         bool resized = true;
 
-        //Initialize the Grid of cells based on configs
-        Grid cells{config.width/config.sideLength, config.height/config.sideLength, config.sideLength};
+        //Initialize the Grid of grid based on configs
+        LogicalGrid grid{config.width/config.sideLength, config.height/config.sideLength, config.sideLength};
 
         //Create window with SFML and set framerate
         sf::RenderWindow window(sf::VideoMode(config.width,config.height), "SFML Project");
@@ -50,17 +51,21 @@ int main(int argc, char** argv){
                 else if(event.type == sf::Event::Resized)
                         resized = true;
             }
-
-            update(config, ops, cells);
             
-            while(!resized && cells.getChangedCellSize() > 0){
-                window.draw(cells.getChangedCell(0));
-                cells.popChangedCell();
+            grid.update();
+
+            while(!resized && grid.getChangedCellSize() > 0){
+                window.draw(grid.getChangedCell(0));
+                grid.popChangedCell();
+            }
+
+            while(!resized && grid.getChangedAntSize() > 0){
+                window.draw(grid.popAnt());
             }
             
             if(resized){
-                for(int i = 0; i < cells.size(); i++){
-                    window.draw(cells.getCell(i));
+                for(int i = 0; i < grid.size(); i++){
+                    window.draw(grid.getCell(i));
                 }
             }
 
@@ -71,9 +76,5 @@ int main(int argc, char** argv){
         return 1;
     }
     return 0;
-}
-
-void update(setting config, operators& ops, Grid& cells){    
-
 }
 

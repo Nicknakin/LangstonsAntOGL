@@ -1,8 +1,8 @@
 CXX = g++
 oglflags = -lsfml-graphics -lsfml-window -lsfml-system
 
-default: cell.o grid.o main.o
-	$(CXX) -o shapes.out main.o cell.o grid.o $(oglflags)
+default: ant.o cell.o grid.o logicalgrid.o main.o
+	$(CXX) -o shapes.out main.o cell.o grid.o ant.o logicalgrid.o $(oglflags)
 
 debug: main.o cell.o
 	$(CXX) -g -Wall -o dbgshapes.out main.cpp cell.cpp grid.cpp $(oglflags)
@@ -18,6 +18,9 @@ grid: grid.cpp grid.h
 
 ant: ant.cpp ant.h
 	$(CXX) -c ant.cpp $(oglflags)
+
+logicalgrid: logicalgrid.cpp logicalgrid.h
+	$(CXX) -c logicalgrid.cpp $(oglflags)
 
 run: default
 	./shapes.out
