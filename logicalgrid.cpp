@@ -22,7 +22,7 @@ void LogicalGrid::update(){
 }
 
 Ant& LogicalGrid::popAnt(){
-    Ant& temp = *ants[changedAnts[0]];
+    Ant& temp = ants[changedAnts[0]];
     changedAnts.erase(changedAnts.begin(), changedAnts.begin()+1);
     return temp;
 }
