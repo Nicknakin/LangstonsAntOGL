@@ -7,10 +7,10 @@
 
 class Ant: public sf::CircleShape {
     public:
-        Ant(int x, int y, int direction, float r, float g, float b);
-        void setPosition(int xMultiplier, int yMultiplier);
+        Ant(int x, int y, int direction, float r, float g, float b, int rad);
+        void setPos(int xMultiplier, int yMultiplier);
         void wrap(int xMax, int yMax);
-        void move(Cell cell);
+        void move(Cell& cell);
 
         int getID();
         int getX();

@@ -35,17 +35,16 @@ int main(int argc, char** argv){
         bool resized = true;
 
         //Initialize the Grid of grid based on configs
-        LogicalGrid grid{config.width/config.sideLength, config.height/config.sideLength, config.sideLength};
+        LogicalGrid grid{config.width/config.sideLength, config.height/config.sideLength, config.sideLength, sf::Color{255, 255, 255}};
 
         //Create window with SFML and set framerate
         sf::RenderWindow window(sf::VideoMode(config.width,config.height), "SFML Project");
-        window.setFramerateLimit(0);
+        window.setFramerateLimit(config.speed);
         
         //Execution loop
         while (window.isOpen()) {
             sf::Event event;
-            while (window.pollEvent(event))
-            {
+            while (window.pollEvent(event)) {
                 if (event.type == sf::Event::Closed)
                     window.close();
                 else if(event.type == sf::Event::Resized)
@@ -59,10 +58,6 @@ int main(int argc, char** argv){
                 grid.popChangedCell();
             }
 
-            while(!resized && grid.getChangedAntSize() > 0){
-                window.draw(grid.popAnt());
-            }
-            
             if(resized){
                 for(int i = 0; i < grid.size(); i++){
                     window.draw(grid.getCell(i));

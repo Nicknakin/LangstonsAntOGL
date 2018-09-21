@@ -1,15 +1,19 @@
 #include "logicalgrid.h"
 
 LogicalGrid::LogicalGrid(int width, int height, int side, sf::Color defaultColor): Grid{width, height, side, defaultColor} {
-    ants.push_back(Ant{width/2, height/2, 0, 0.5f, 0.5f, 0.5f});
+    ants.push_back(Ant{width/2, height/2, 0, 0.5f, 0.5f, 0.5f, side});
 }
 
 void LogicalGrid::update(){
     for(auto& ant: ants){
-        changedCells.push_back(ant.getX()+ant.getY()*width);
-        ant.move(cells[ant.getX()+ant.getY()*width]);
-        ant.wrap(side, side);
+        int cellIndex = ant.getX()+ant.getY()*width;
+        changedCells.push_back(cellIndex);
+        ant.move(cells[cellIndex]);
+        ant.wrap(width, height);
+        ant.setPos(side,side);
         changedAnts.push_back(&ant);
+        if(cells[cellIndex].getValue() == 0)
+            cells[cellIndex].setColor(defaultColor);
     }
 }
 

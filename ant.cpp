@@ -1,14 +1,12 @@
 #include "ant.h"
 
-Ant::Ant(int x, int y, int direction, float r, float g, float b): sf::CircleShape{3}, x{x}, y{y}, direction{direction}, r{r}, g{g}, b{b}, id{0} {
-    setFillColor(sf::Color{(int) (r*255), (int) (g*255), (int) (b*255)});
+Ant::Ant(int x, int y, int direction, float r, float g, float b, int rad): sf::CircleShape{rad/2, 3}, x{x}, y{y}, direction{direction}, r{r}, g{g}, b{b}, id{0} {
+    setFillColor(sf::Color{(int) (1*255), (int) (0.5*255), (int) (b*255)});
     setRotation(90*direction);
-
 }
 
-void Ant::setPosition(int xMultiplier, int yMultiplier){
-    setPosition(x*xMultiplier, y*yMultiplier);
-    setRotation(90*direction);
+void Ant::setPos(int xMultiplier, int yMultiplier){
+    sf::Transformable::setPosition(x*xMultiplier + getRadius(), y*yMultiplier + getRadius());
 }
 
 void Ant::wrap(int xMax, int yMax){
@@ -16,10 +14,7 @@ void Ant::wrap(int xMax, int yMax){
     y = (y+yMax)%yMax;
 }
 
-void Ant::move(Cell cell){
-    if(&cell == nullptr)
-        return;
-
+void Ant::move(Cell& cell){
     if(cell.getValue())
         turnLeft();
     else
