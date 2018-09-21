@@ -17,7 +17,7 @@ class LogicalGrid: public Grid{
 
     private:
         std::vector<Ant> ants;
-        std::vector<Ant*> changedAnts;
+        std::vector<int> changedAnts;
 };
 
 #endif
